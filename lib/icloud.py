@@ -93,11 +93,6 @@ class IcloudService(__iCloudService__):
             __modify_create_date__()
 
         logging.info(f"开始了{photo.id}, {photo.filename}, {photo.size}")
-        con = sqlite3.connect(os.path.join(outputDir, 'info.db'))
-        con.execute(
-            'INSERT OR IGNORE INTO photos(id, created, asset_date, added_date, filename,size,dimension_x,dimension_y) values (?,?,?,?,?,?,?,?)',
-            (photo.id, photo.created, photo.asset_date, photo.added_date, photo.filename, photo.size,
-             photo.dimensions[0], photo.dimensions[1]))
         _ext_ = str(photo.filename).split(".")[1]
         _file_name_ = f"{photo.id.replace('/', '-')}.{_ext_}"
         raw_path = os.path.join(outputDir, _file_name_)
@@ -116,8 +111,6 @@ class IcloudService(__iCloudService__):
                     __modify_create_date__()
         else:
             __download__()
-        con.commit()
-        con.close()
         self.COMPLETED_OF_DOWNLOAD_PHOTO += 1
         logging.info(
             f"%0.2f%% ({self.COMPLETED_OF_DOWNLOAD_PHOTO}/{recent}):{photo.id}, {photo.filename}, {raw_path}" % (
