@@ -140,6 +140,7 @@ class IcloudService(__iCloudService__):
             else:
                 pool = ThreadPoolExecutor(max_workers=max_thread_count)
                 for i in range(1, recent + 1):
+                    logging.info(f"{i}")
                     photo = next(_all, None)
                     pool.submit(IcloudService.handle, self, outputDir, recent, photo, modify_olds, auto_delete)
                 pool.shutdown(wait=True)
