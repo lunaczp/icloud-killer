@@ -95,7 +95,13 @@ class IcloudService(__iCloudService__):
         logging.info(f"开始了{photo.id}, {photo.filename}, {photo.size}")
         _ext_ = str(photo.filename).split(".")[1]
         _file_name_ = f"{photo.id.replace('/', '-')}.{_ext_}"
-        raw_path = os.path.join(outputDir, _file_name_)
+
+        createdYear = photo.created.strftime("%Y")
+        fileDir = os.path.join(outputDir, createdYear)
+        if not os.path.exists(fileDir):
+            os.makedirs(fileDir)
+        
+        raw_path = os.path.join(fileDir, _file_name_)
         if os.path.exists(raw_path):
             statinfo = os.stat(raw_path)
             if photo.size > statinfo.st_size:
